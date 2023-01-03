@@ -43,7 +43,7 @@ max_offer_megas = 10000
 
 
 # department
-managers_ssn_list = [0] * numOfDeptartments
+managers_ssn_list = []
 
 
 # plan
@@ -75,10 +75,10 @@ def generateEmployeeData():
     employeeData = []
     for i in range(1,numOfEmployees +1):
         # SSN, FIRST_NAME, LAST_NAME, DEPT_NUM, SALARY, GENDER, PHONE_NUM, BRANCH, MGR_SSN
-        department = random.randint(1, numOfDeptartments+1)
+        department = random.randint(1, numOfDeptartments)
         if i == 1:
             employeeData.append(['SSN', 'FIRST_NAME', 'LAST_NAME', 'DEPT_NUM', 'SALARY', 'GENDER', 'PHONE_NUM', 'BRANCH','MGR_SSN'])
-        employeeData.append([i, "FIRST_NAME" + str(i), "LAST_NAME" + str(i), department, random.randint(5000 , 50001) ,random.choice(['M','F']), generatePhoneNumber(), random.randint(1, numOfBranchs+1), managers_ssn_list[department-1]])
+        employeeData.append([i, "FIRST_NAME" + str(i), "LAST_NAME" + str(i), department, random.randint(5000 , 50001) ,random.choice(['M','F']), generatePhoneNumber(), random.randint(1, numOfBranchs), managers_ssn_list[department-1]])
     return employeeData
 
 
@@ -95,11 +95,12 @@ def generateCustomerData():
 
 def generateDepartmentData():
     departmentData = []
+    global managers_ssn_list
     for i in range(1, numOfDeptartments + 1):
         # DNUM, DNAME, MGR_SSN
         if i == 1:
             departmentData.append(['DNUM', 'DNAME', 'MGR_SSN'])
-        mng_ssn = random.randint(1, numOfEmployees+1)
+        mng_ssn = random.randint(1, numOfEmployees)
         managers_ssn_list.append(mng_ssn)
         departmentData.append([i, "DEPT" + str(i), mng_ssn])
     return departmentData
@@ -114,7 +115,7 @@ def generateCardData():
         is_recharged = random.choice([0, 1])
         if is_recharged == 1:
             recharged_cards_ids.append(i)
-        cardData.append([i, random.randint(min_card_value, max_card_value), is_recharged, random.randint(1, numOfCustomers+1) if is_recharged == 1 else None])
+        cardData.append([i, random.randint(min_card_value, max_card_value), is_recharged, random.randint(1, numOfCustomers) if is_recharged == 1 else None])
     return cardData
 
 
@@ -131,10 +132,10 @@ def generateCompliantsData():
     complaintsData = []
     for i in range(1, numOfComplaints + 1):
         # CODE, STATUS, DESCRIPTION, DATE, CUSTOMER_ID, EMPLOYEE_ID, EMPLOYEE_FIRST_NAME, EMPLOYEE_LAST_NAME
-        employeeId = random.randint(1, numOfEmployees+1)
+        employeeId = random.randint(1, numOfEmployees)
         if i == 1:
             complaintsData.append(['CODE', 'STATUS', 'DESCRIPTION', 'DATE', 'CUSTOMER_ID', 'EMPLOYEE_ID', 'EMPLOYEE_FIRST_NAME', 'EMPLOYEE_LAST_NAME'])
-        complaintsData.append([i,random.choice([0,1]), 'COMPLAINT' + str(i), generateRandomDate(), random.randint(1, numOfCustomers+1), employeeId,"FIRST_NAME" + str(employeeId), "LAST_NAME" + str(employeeId)])
+        complaintsData.append([i,random.choice([0,1]), 'COMPLAINT' + str(i), generateRandomDate(), random.randint(1, numOfCustomers), employeeId,"FIRST_NAME" + str(employeeId), "LAST_NAME" + str(employeeId)])
     return complaintsData
 
 def generateBranchData():
@@ -152,7 +153,7 @@ def generateOfferData():
         # ID, PRICE, MINUTES, MEGAS, EXPIRE_DATE
         if i == 1:
             offerData.append(['ID', 'PRICE', 'MINUTES', 'MEGAS', 'EXPIRE_DATE'])
-        offerData.append([i, random.randint(min_offer_price, max_offer_price+1), random.randint(min_offer_minutes, max_offer_minutes+1), random.randint(min_offer_megas, max_offer_megas+1), generateRandomDate()])
+        offerData.append([i, random.randint(min_offer_price, max_offer_price), random.randint(min_offer_minutes, max_offer_minutes+1), random.randint(min_offer_megas, max_offer_megas), generateRandomDate()])
     return offerData
 
 def generateFAQData():
@@ -162,7 +163,7 @@ def generateFAQData():
         if i == 1:
             faqData.append(['ID', 'QUESTION', 'ANSWER', 'IS_ANSWERED', 'SSN', 'DATE'])
         is_answered = random.choice([0, 1])
-        faqData.append([i, 'QUESTION' + str(i), 'ANSWER' + str(i), is_answered, random.randint(1, numOfEmployees+1) if is_answered == 1 else None, generateRandomDate()])
+        faqData.append([i, 'QUESTION' + str(i), 'ANSWER' + str(i), is_answered, random.randint(1, numOfEmployees) if is_answered == 1 else None, generateRandomDate()])
     return faqData
 
 def generatePlanData():
@@ -181,7 +182,7 @@ def generateCustomer_OfferData():
         # ID, CUSTOMER_ID, OFFER_ID
         if i == 1:
             customer_offerData.append(['ID', 'CUSTOMER_ID', 'OFFER_ID'])
-        customer_offerData.append([i, random.randint(1, numOfCustomers+1), random.randint(1, numOfOffers+1)])
+        customer_offerData.append([i, random.randint(1, numOfCustomers), random.randint(1, numOfOffers)])
     return customer_offerData
 
 
@@ -192,7 +193,7 @@ def generateCustomer_ServiceData():
         # append the header if i == 0
         if i == 1:
             customer_serviceData.append(['ID', 'CUSTOMER_ID', 'SERVICE_ID'])
-        customer_serviceData.append([i, random.randint(1, numOfCustomers+1), random.randint(1, numOfServices+1)])
+        customer_serviceData.append([i, random.randint(1, numOfCustomers), random.randint(1, numOfServices)])
     return customer_serviceData
 
 
