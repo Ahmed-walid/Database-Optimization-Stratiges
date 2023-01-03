@@ -43,7 +43,7 @@ max_offer_megas = 10000
 
 
 # department
-managers_ssn_list = []
+managers_ssn_list = [0] * numOfDeptartments
 
 
 # plan
@@ -74,10 +74,11 @@ def generateRandomDate():
 def generateEmployeeData():
     employeeData = []
     for i in range(1,numOfEmployees +1):
-        # SSN, FIRST_NAME, LAST_NAME, DEPT_NUM, SALARY, GENDER, PHONE_NUM, BRANCH
+        # SSN, FIRST_NAME, LAST_NAME, DEPT_NUM, SALARY, GENDER, PHONE_NUM, BRANCH, MGR_SSN
+        department = random.randint(1, numOfDeptartments+1)
         if i == 1:
-            employeeData.append(['SSN', 'FIRST_NAME', 'LAST_NAME', 'DEPT_NUM', 'SALARY', 'GENDER', 'PHONE_NUM', 'BRANCH'])
-        employeeData.append([i, "FIRST_NAME" + str(i), "LAST_NAME" + str(i), random.randint(1, numOfDeptartments+1), random.randint(5000 , 50001) ,random.choice(['M','F']), generatePhoneNumber(), random.randint(1, numOfBranchs+1)])
+            employeeData.append(['SSN', 'FIRST_NAME', 'LAST_NAME', 'DEPT_NUM', 'SALARY', 'GENDER', 'PHONE_NUM', 'BRANCH','MGR_SSN'])
+        employeeData.append([i, "FIRST_NAME" + str(i), "LAST_NAME" + str(i), department, random.randint(5000 , 50001) ,random.choice(['M','F']), generatePhoneNumber(), random.randint(1, numOfBranchs+1), managers_ssn_list[department-1]])
     return employeeData
 
 
@@ -129,10 +130,11 @@ def generateServiceData():
 def generateCompliantsData():
     complaintsData = []
     for i in range(1, numOfComplaints + 1):
-        # CODE, STATUS, DESCRIPTION, DATE, CUSTOMER_ID, EMPLOYEE_ID
+        # CODE, STATUS, DESCRIPTION, DATE, CUSTOMER_ID, EMPLOYEE_ID, EMPLOYEE_FIRST_NAME, EMPLOYEE_LAST_NAME
+        employeeId = random.randint(1, numOfEmployees+1)
         if i == 1:
-            complaintsData.append(['CODE', 'STATUS', 'DESCRIPTION', 'DATE', 'CUSTOMER_ID', 'EMPLOYEE_ID'])
-        complaintsData.append([i,random.choice([0,1]), 'COMPLAINT' + str(i), generateRandomDate(), random.randint(1, numOfCustomers+1), random.randint(1, numOfEmployees+1)])
+            complaintsData.append(['CODE', 'STATUS', 'DESCRIPTION', 'DATE', 'CUSTOMER_ID', 'EMPLOYEE_ID', 'EMPLOYEE_FIRST_NAME', 'EMPLOYEE_LAST_NAME'])
+        complaintsData.append([i,random.choice([0,1]), 'COMPLAINT' + str(i), generateRandomDate(), random.randint(1, numOfCustomers+1), employeeId,"FIRST_NAME" + str(employeeId), "LAST_NAME" + str(employeeId)])
     return complaintsData
 
 def generateBranchData():
@@ -204,30 +206,32 @@ def writeCSV(data, filename):
 
 # main function
 def main():
-    employeeData = generateEmployeeData()
-    writeCSV(employeeData, "./CSVS/employee.csv")
-    customerData = generateCustomerData()
-    writeCSV(customerData, "./CSVS/customer.csv")
+
+    # department data generation must run before employee data generation.
     departmentData = generateDepartmentData()
-    writeCSV(departmentData, "./CSVS/department.csv")
+    writeCSV(departmentData, "../CSVS/department.csv")
+    employeeData = generateEmployeeData()
+    writeCSV(employeeData, "../CSVS/employee.csv")
+    customerData = generateCustomerData()
+    writeCSV(customerData, "../CSVS/customer.csv")
     cardData = generateCardData()
-    writeCSV(cardData, "./CSVS/card.csv")
+    writeCSV(cardData, "../CSVS/card.csv")
     serviceData = generateServiceData()
-    writeCSV(serviceData, "./CSVS/service.csv")
+    writeCSV(serviceData, "../CSVS/service.csv")
     complaintsData = generateCompliantsData()
-    writeCSV(complaintsData, "./CSVS/complaints.csv")
+    writeCSV(complaintsData, "../CSVS/complaints.csv")
     branchData = generateBranchData()
-    writeCSV(branchData, "./CSVS/branch.csv")
+    writeCSV(branchData, "../CSVS/branch.csv")
     offerData = generateOfferData()
-    writeCSV(offerData, "./CSVS/offer.csv")
+    writeCSV(offerData, "../CSVS/offer.csv")
     faqData = generateFAQData()
-    writeCSV(faqData, "./CSVS/faq.csv")
+    writeCSV(faqData, "../CSVS/faq.csv")
     planData = generatePlanData()
-    writeCSV(planData, "./CSVS/plan.csv")
+    writeCSV(planData, "../CSVS/plan.csv")
     customer_offerData = generateCustomer_OfferData()
-    writeCSV(customer_offerData, "./CSVS/customer_offer.csv")
+    writeCSV(customer_offerData, "../CSVS/customer_offer.csv")
     customer_serviceData = generateCustomer_ServiceData()
-    writeCSV(customer_serviceData, "./CSVS/customer_service.csv")
+    writeCSV(customer_serviceData, "../CSVS/customer_service.csv")
 
 if __name__ == "__main__":
     main()
